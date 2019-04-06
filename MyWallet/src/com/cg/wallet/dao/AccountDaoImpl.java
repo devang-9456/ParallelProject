@@ -1,6 +1,8 @@
 package com.cg.wallet.dao;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.cg.wallet.dto.Account;
@@ -19,7 +21,7 @@ public class AccountDaoImpl implements AccountDao {
 
 	@Override
 	public void addTransaction(Transactions tr) {
-		StaticDB.getTransactionEntries().put(tr.getTransId(), tr);
+		StaticDB.getTransactionEntries().put(tr.getTransSeq(), tr);
 		System.out.println("Transaction added");
 	}
 
@@ -31,35 +33,63 @@ public class AccountDaoImpl implements AccountDao {
 	@Override
 	public double deposit(long accId, double amount) {
 		incBalance(accId, amount);
-		long tid;
-		tid=accId*10+1;
-		int tseq=StaticDB.getTransactionEntries().get(tid).getTransSeq()+1;
-		
-		return 0;
+		long tId=accId*10+1;
+		LocalDateTime now = LocalDateTime.now(); 
+		Transactions ts=new Transactions(++StaticDB.tSeq, tId, "Deposit", amount, StaticDB.getAccountEntries().get(accId).getBalance(), dtf.format(now));
+		addTransaction(ts);
+		return StaticDB.getAccountEntries().get(accId).getBalance();
 	}
 
 	@Override
 	public double withdraw(long accId, double amount) {
-		// TODO Auto-generated method stub
-		return 0;
+		double bal = StaticDB.getAccountEntries().get(accId).getBalance();
+		if(bal>=amount){
+		decBalance(accId,amount);
+		long tId=accId*10+1;
+		LocalDateTime now = LocalDateTime.now();
+		Transactions ts=new Transactions(++StaticDB.tSeq, tId, "Withdraw", amount, StaticDB.getAccountEntries().get(accId).getBalance(), dtf.format(now));
+		addTransaction(ts);
+		return StaticDB.getAccountEntries().get(accId).getBalance();
+		}else{
+			System.out.println("Invalid withdrawal amount. Insufficient balance.");
+			return StaticDB.getAccountEntries().get(accId).getBalance();
+		}
 	}
 
 	@Override
 	public boolean fundTransfer(long accId1, double amount, long accId2) {
-		// TODO Auto-generated method stub
+		double bal = StaticDB.getAccountEntries().get(accId1).getBalance();
+		if(bal>=amount){
+			decBalance(accId1, amount);
+			incBalance(accId2, amount);
+			long tId1 = accId1*10+1;
+			long tId2 = accId2*10+1;
+			LocalDateTime now = LocalDateTime.now();
+			Transactions ts1 = new Transactions(++StaticDB.tSeq, tId1,"Transfer",amount,StaticDB.getAccountEntries().get(accId1).getBalance(),dtf.format(now));
+			addTransaction(ts1);
+			Transactions ts2 = new Transactions(++StaticDB.tSeq, tId2,"Transfer",amount,StaticDB.getAccountEntries().get(accId2).getBalance(),dtf.format(now));
+			addTransaction(ts2);
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public List<Transactions> showTransactions(long accId) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Transactions> tranList= new ArrayList<Transactions>(StaticDB.getTransactionEntries().values());
+		List<Transactions> sortTranList=new ArrayList<Transactions>();
+		long tId=accId*10+1;
+		for(Transactions ts:tranList){
+			if(ts.getTransId()==tId){
+				sortTranList.add(ts);
+			}
+		}
+		return sortTranList;
 	}
 
 	@Override
 	public Account showMyAccountInfo(long accId) {
-		// TODO Auto-generated method stub
-		return null;
+		return StaticDB.getAccountEntries().get(accId);
 	}
 
 	@Override
@@ -76,8 +106,20 @@ public class AccountDaoImpl implements AccountDao {
 
 	@Override
 	public List<Account> showAllAccounts() {
+		List<Account> tranList= new ArrayList<Account>(StaticDB.getAccountEntries().values());
+		return tranList;
+	}
+
+	@Override
+	public long getAccId() {
 		// TODO Auto-generated method stub
-		return null;
+		return ++StaticDB.accId;
+	}
+
+	@Override
+	public int getTranSeq() {
+		// TODO Auto-generated method stub
+		return ++StaticDB.tSeq;
 	}
 
 }

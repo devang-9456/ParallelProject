@@ -5,19 +5,16 @@ public class Account {
 	private long accNo;
 	private String accHolderName;
 	private double balance;
-	private Transactions tr;
 	
 	public Account() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Account(long accNo, String accHolderName, double balance,
-			Transactions tr) {
+	public Account(long accNo, String accHolderName, double balance) {
 		super();
 		this.accNo = accNo;
 		this.accHolderName = accHolderName;
 		this.balance = balance;
-		this.tr = tr;
 	}
 
 	public long getaccNo() {
@@ -44,12 +41,10 @@ public class Account {
 		this.balance = balance;
 	}
 
-	public Transactions getTr() {
-		return tr;
-	}
-
-	public void setTr(Transactions tr) {
-		this.tr = tr;
+	@Override
+	public String toString() {
+		return "Account [Account No. = " + accNo + ", Account Holder = " + accHolderName
+				+ ", Balance = " + balance + "]\n";
 	}
 	
 }

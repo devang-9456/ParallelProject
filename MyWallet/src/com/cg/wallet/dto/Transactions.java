@@ -2,22 +2,24 @@ package com.cg.wallet.dto;
 
 public class Transactions {
 
-	private long transId;
 	private int transSeq;
+	private long transId;
 	private String tType;
 	private double amount;
+	private double balance;
 	private String date;
 	
 	public Transactions() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Transactions(long transId, int transSeq, String tType, double amount, String date) {
+	public Transactions(int transSeq, long transId, String tType, double amount, double balance, String date) {
 		super();
 		this.transId = transId;
 		this.transSeq = transSeq;
 		this.tType = tType;
 		this.amount = amount;
+		this.balance=balance;
 		this.date=date;
 	}
 
@@ -53,12 +55,27 @@ public class Transactions {
 		this.amount = amount;
 	}
 
+	public double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
 	public String getDate() {
 		return date;
 	}
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	@Override
+	public String toString() {
+		return "Transactions [Transaction Sequence = " + transSeq + ", Transaction ID = " + transId
+				+ ", Transaction Type = " + tType + ", \n\tAmount = " + amount + ", Balance = "
+				+ balance + ", Transaction Date = " + date + "]\n";
 	}
 	
 }
