@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.cg.wallet.dto.Account;
 import com.cg.wallet.dto.Transactions;
+import com.cg.wallet.exception.NotFoundException;
 import com.cg.wallet.util.StaticDB;
 
 public class AccountDaoImpl implements AccountDao {
@@ -26,12 +27,22 @@ public class AccountDaoImpl implements AccountDao {
 	}
 
 	@Override
-	public double showBalance(long accId) {
-		return StaticDB.getAccountEntries().get(accId).getBalance();
+	public double showBalance(long accId) throws NotFoundException {
+
+		Account account = StaticDB.getAccountEntries().get(accId);
+		if(account == null) {
+			throw new NotFoundException("Account doesn't exist.");
+		}
+		double balance=account.getBalance();
+		return balance;
 	}
 
 	@Override
-	public double deposit(long accId, double amount) {
+	public double deposit(long accId, double amount) throws NotFoundException {
+		Account account = StaticDB.getAccountEntries().get(accId);
+		if(account == null) {
+			throw new NotFoundException("Account doesn't exist.");
+		}
 		incBalance(accId, amount);
 		long tId=accId*10+1;
 		LocalDateTime now = LocalDateTime.now(); 
@@ -41,7 +52,11 @@ public class AccountDaoImpl implements AccountDao {
 	}
 
 	@Override
-	public double withdraw(long accId, double amount) {
+	public double withdraw(long accId, double amount) throws NotFoundException {
+		Account account = StaticDB.getAccountEntries().get(accId);
+		if(account == null) {
+			throw new NotFoundException("Account doesn't exist.");
+		}
 		double bal = StaticDB.getAccountEntries().get(accId).getBalance();
 		if(bal>=amount){
 		decBalance(accId,amount);
@@ -57,7 +72,12 @@ public class AccountDaoImpl implements AccountDao {
 	}
 
 	@Override
-	public boolean fundTransfer(long accId1, double amount, long accId2) {
+	public boolean fundTransfer(long accId1, double amount, long accId2) throws NotFoundException {
+		Account account1 = StaticDB.getAccountEntries().get(accId1);
+		Account account2 = StaticDB.getAccountEntries().get(accId2);
+		if(account1 == null||account2 == null) {
+			throw new NotFoundException("Account doesn't exist.");
+		}
 		double bal = StaticDB.getAccountEntries().get(accId1).getBalance();
 		if(bal>=amount){
 			decBalance(accId1, amount);
@@ -75,7 +95,11 @@ public class AccountDaoImpl implements AccountDao {
 	}
 
 	@Override
-	public List<Transactions> showTransactions(long accId) {
+	public List<Transactions> showTransactions(long accId) throws NotFoundException {
+		Account account = StaticDB.getAccountEntries().get(accId);
+		if(account == null) {
+			throw new NotFoundException("Account doesn't exist.");
+		}
 		List<Transactions> tranList= new ArrayList<Transactions>(StaticDB.getTransactionEntries().values());
 		List<Transactions> sortTranList=new ArrayList<Transactions>();
 		long tId=accId*10+1;
@@ -88,7 +112,11 @@ public class AccountDaoImpl implements AccountDao {
 	}
 
 	@Override
-	public Account showMyAccountInfo(long accId) {
+	public Account showMyAccountInfo(long accId) throws NotFoundException {
+		Account account = StaticDB.getAccountEntries().get(accId);
+		if(account == null) {
+			throw new NotFoundException("Account doesn't exist.");
+		}
 		return StaticDB.getAccountEntries().get(accId);
 	}
 

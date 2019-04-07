@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import com.cg.wallet.dto.Account;
 import com.cg.wallet.dto.Transactions;
+import com.cg.wallet.exception.NotFoundException;
 import com.cg.wallet.service.AccountService;
 import com.cg.wallet.service.AccountServiceImpl;
 
@@ -52,21 +53,21 @@ public class WalletClient {
 						
 				case 3: System.out.println("Please enter your account number to check balance:");
 						long acc2=sc.nextLong();
-						System.out.println("Your current balance is: "+service.showBalance(acc2));
+						System.out.println("Your current balance is: " + service.showBalance(acc2));
 						break;
 						
 				case 4: System.out.println("Please enter the account number to which amount is to be deposited: ");
 						long accD=sc.nextLong();
 						System.out.println("Please enter the amount to be deposited: ");
 						double deposit=sc.nextDouble();
-						System.out.println("New Balance after deposit is : "+service.deposit(accD, deposit));
+						System.out.println("New Balance after deposit is : " + service.deposit(accD, deposit));
 						break;
 						
 				case 5: System.out.println("Please enter the account number from which amount is to be withdrawn: ");
 						long accW=sc.nextLong();
 						System.out.println("Please enter the amount to be withdrawn: ");
 						double withD=sc.nextDouble();
-						System.out.println("New Balance after withdrawal is : "+service.withdraw(accW, withD));
+						System.out.println("New Balance after withdrawal is : " + service.withdraw(accW, withD));
 						break;
 						
 				case 6: System.out.println("Please enter the account from which funds needs to be transfered: ");
@@ -75,12 +76,13 @@ public class WalletClient {
 						double fAmount=sc.nextDouble();
 						System.out.println("Please enter the account in which funds needs to be transfered");
 						long acc4=sc.nextLong();
-						System.out.println("Funds Transfer successfull? "+service.fundTransfer(acc3, fAmount, acc4));
+						System.out.println("Funds Transfer successfull? " + service.fundTransfer(acc3, fAmount, acc4));
 						break;
 						
 				case 7: System.out.println("Enter the account number whose transactions you want displayed: ");
 						long accTran=sc.nextLong();
-						List<Transactions> tranList = service.showTransactionByAccountId(accTran);
+						List<Transactions> tranList=null;
+						tranList = service.showTransactionByAccountId(accTran);
 						System.out.println("Following are the transactions for "+accTran+" account: ");
 						for(Transactions tc:tranList){
 							System.out.println(tc);

@@ -6,6 +6,7 @@ import com.cg.wallet.dao.AccountDao;
 import com.cg.wallet.dao.AccountDaoImpl;
 import com.cg.wallet.dto.Account;
 import com.cg.wallet.dto.Transactions;
+import com.cg.wallet.exception.NotFoundException;
 
 public class AccountServiceImpl implements AccountService {
 
@@ -32,37 +33,73 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public double showBalance(long accId) {
 		// TODO Auto-generated method stub
-		return dao.showBalance(accId);
+		try {
+			return dao.showBalance(accId);
+		} catch (NotFoundException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 	@Override
 	public double deposit(long accId, double amount) {
 		// TODO Auto-generated method stub
-		return dao.deposit(accId, amount);
+		try {
+			return dao.deposit(accId, amount);
+		} catch (NotFoundException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return amount;
 	}
 
 	@Override
 	public double withdraw(long accId, double amount) {
 		// TODO Auto-generated method stub
-		return dao.withdraw(accId, amount);
+		try {
+			return dao.withdraw(accId, amount);
+		} catch (NotFoundException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return amount;
 	}
 
 	@Override
 	public boolean fundTransfer(long accId1, double amount, long accId2) {
 		// TODO Auto-generated method stub
-		return dao.fundTransfer(accId1, amount, accId2);
+		try {
+			return dao.fundTransfer(accId1, amount, accId2);
+		} catch (NotFoundException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public List<Transactions> showTransactionByAccountId(long accId) {
 		// TODO Auto-generated method stub
-		return dao.showTransactions(accId);
+		try {
+			return dao.showTransactions(accId);
+		} catch (NotFoundException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public Account showMyAccountInfo(long accId) {
 		// TODO Auto-generated method stub
-		return dao.showMyAccountInfo(accId);
+		try {
+			return dao.showMyAccountInfo(accId);
+		} catch (NotFoundException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
