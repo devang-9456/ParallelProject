@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 import com.cg.wallet.dto.Account;
 import com.cg.wallet.dto.Transactions;
-import com.cg.wallet.exception.NotFoundException;
 import com.cg.wallet.service.AccountService;
 import com.cg.wallet.service.AccountServiceImpl;
 

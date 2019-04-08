@@ -2,26 +2,26 @@ package com.cg.wallet.dto;
 
 public class Account {
 	
-	private long accNo;
+	private Long accNo;
 	private String accHolderName;
-	private double balance;
+	private Double balance;
 	
 	public Account() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Account(long accNo, String accHolderName, double balance) {
+	public Account(Long accNo, String accHolderName, Double balance) {
 		super();
 		this.accNo = accNo;
 		this.accHolderName = accHolderName;
 		this.balance = balance;
 	}
 
-	public long getaccNo() {
+	public Long getaccNo() {
 		return accNo;
 	}
 
-	public void setaccNo(long accNo) {
+	public void setaccNo(Long accNo) {
 		this.accNo = accNo;
 	}
 
@@ -33,11 +33,11 @@ public class Account {
 		this.accHolderName = accHolderName;
 	}
 
-	public double getBalance() {
+	public Double getBalance() {
 		return balance;
 	}
 
-	public void setBalance(double balance) {
+	public void setBalance(Double balance) {
 		this.balance = balance;
 	}
 
